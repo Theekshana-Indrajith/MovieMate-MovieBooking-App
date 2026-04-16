@@ -26,12 +26,20 @@ router.use(protect);
 router
     .route('/')
     .get(getMovies)
+<<<<<<< HEAD
     .post(authorize('admin'), upload.single('poster'), createMovie);
+=======
+    .post(authorize('admin'), upload.fields([{ name: 'poster', maxCount: 1 }, { name: 'backdrop', maxCount: 1 }]), createMovie);
+>>>>>>> origin/theekshana-IT24102753
 
 router
     .route('/:id')
     .get(getMovie)
+<<<<<<< HEAD
     .put(authorize('admin'), upload.single('poster'), updateMovie)
+=======
+    .put(authorize('admin'), upload.fields([{ name: 'poster', maxCount: 1 }, { name: 'backdrop', maxCount: 1 }]), updateMovie)
+>>>>>>> origin/theekshana-IT24102753
     .delete(authorize('admin'), deleteMovie);
 
 router.route('/:id/reviews').post(createMovieReview);

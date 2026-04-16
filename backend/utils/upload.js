@@ -13,7 +13,11 @@ const ensureDir = (dir) => {
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         let dir = 'uploads/';
+<<<<<<< HEAD
         if (file.fieldname === 'poster') {
+=======
+        if (file.fieldname === 'poster' || file.fieldname === 'backdrop') {
+>>>>>>> origin/theekshana-IT24102753
             dir += 'movies';
         } else if (file.fieldname === 'image') {
             dir += 'snacks';

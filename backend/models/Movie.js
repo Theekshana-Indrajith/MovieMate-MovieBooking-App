@@ -56,9 +56,23 @@ const movieSchema = new mongoose.Schema({
         required: [true, 'Please add a release date']
     },
     poster: {
+<<<<<<< HEAD
         type: String, // Filename store kireema
         default: 'no-image.jpg'
     },
+=======
+        type: String, 
+        default: 'no-image.jpg'
+    },
+    backdrop: {
+        type: String,
+        default: 'no-backdrop.jpg'
+    },
+    cast: {
+        type: [String],
+        default: []
+    },
+>>>>>>> origin/theekshana-IT24102753
     isShowing: {
         type: Boolean,
         default: true

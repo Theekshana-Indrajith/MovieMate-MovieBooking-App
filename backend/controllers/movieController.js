@@ -33,9 +33,16 @@ exports.createMovie = async (req, res, next) => {
         // Add user ID to movie
         req.body.addedBy = req.user.id;
 
+<<<<<<< HEAD
         // Add poster if uploaded
         if (req.file) {
             req.body.poster = req.file.filename;
+=======
+        // Handle Multiple Uploads
+        if (req.files) {
+            if (req.files.poster) req.body.poster = req.files.poster[0].filename;
+            if (req.files.backdrop) req.body.backdrop = req.files.backdrop[0].filename;
+>>>>>>> origin/theekshana-IT24102753
         }
 
         const movie = await Movie.create(req.body);
@@ -53,9 +60,16 @@ exports.updateMovie = async (req, res, next) => {
         let movie = await Movie.findById(req.params.id);
         if (!movie) return res.status(404).json({ success: false, error: 'Movie not found' });
 
+<<<<<<< HEAD
         // Add poster if uploaded
         if (req.file) {
             req.body.poster = req.file.filename;
+=======
+        // Handle Multiple Uploads
+        if (req.files) {
+            if (req.files.poster) req.body.poster = req.files.poster[0].filename;
+            if (req.files.backdrop) req.body.backdrop = req.files.backdrop[0].filename;
+>>>>>>> origin/theekshana-IT24102753
         }
 
         movie = await Movie.findByIdAndUpdate(req.params.id, req.body, {
