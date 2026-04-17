@@ -6,6 +6,7 @@ import { ArrowLeft, Clock, Ticket, Star, MessageSquare, Trash2, Users, Info } fr
 import SkeletonLoader from '../components/SkeletonLoader';
 import BASE_URL from '../utils/constants';
 
+// Screen for rendering Movie details, showtimes, and user reviews
 const MovieDetailsScreen = ({ route, navigation }) => {
     const { movie: initialMovie } = route.params;
     const { token, user } = useContext(AuthContext);
