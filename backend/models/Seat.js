@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// Seat Schema for Managing Movie Theater Seat Arrangement
 const seatRowSchema = new mongoose.Schema({
     rowCode: {
         type: String,
