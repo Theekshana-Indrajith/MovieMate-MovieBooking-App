@@ -1,5 +1,6 @@
 const Movie = require('../models/Movie');
 
+// Main controller for handling Movie operations and User Reviews
 // @desc    Get all movies
 // @route   GET /api/movies
 // @access  Public
