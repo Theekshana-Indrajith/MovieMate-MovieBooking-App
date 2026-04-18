@@ -5,6 +5,7 @@ import api from '../utils/api';
 import { ArrowLeft, ShoppingCart, Plus, Minus, X, Trash2, CheckCircle2 } from 'lucide-react-native';
 import SkeletonLoader from '../components/SkeletonLoader';
 
+// Main Menu Screen for Users to Browse and Select Snacks
 const UserSnackMenuScreen = ({ navigation }) => {
     const { token } = useContext(AuthContext);
     const [snacks, setSnacks] = useState([]);
