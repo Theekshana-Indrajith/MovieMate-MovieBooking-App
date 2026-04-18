@@ -4,6 +4,10 @@ import { AuthContext } from '../context/AuthContext';
 import api from '../utils/api';
 import { ArrowLeft, CheckCircle } from 'lucide-react-native';
 
+<<<<<<< HEAD
+=======
+// Main Screen for User Seat Selection and Booking Flow
+>>>>>>> origin/anusara-IT24102789
 const SeatSelectionScreen = ({ route, navigation }) => {
     const { movie, showtime } = route.params;
     const { token } = useContext(AuthContext);

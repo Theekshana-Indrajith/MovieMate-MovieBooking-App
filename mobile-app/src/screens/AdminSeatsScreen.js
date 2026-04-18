@@ -3,6 +3,10 @@ import { StyleSheet, Text, View, TouchableOpacity, ScrollView, SafeAreaView, Act
 import { ArrowLeft, Armchair, Plus, Trash2 } from 'lucide-react-native';
 import api from '../utils/api';
 import { AuthContext } from '../context/AuthContext';
+<<<<<<< HEAD
+=======
+import BottomNav from '../components/BottomNav';
+>>>>>>> origin/anusara-IT24102789
 
 const AdminSeatsScreen = ({ navigation }) => {
     const { token } = useContext(AuthContext);
@@ -121,12 +125,19 @@ const AdminSeatsScreen = ({ navigation }) => {
                         </View>
                     </TouchableOpacity>
                 ))}
+<<<<<<< HEAD
             </ScrollView>
+=======
+                <View style={{ height: 100 }} />
+            </ScrollView>
+            <BottomNav />
+>>>>>>> origin/anusara-IT24102789
         </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
+<<<<<<< HEAD
     container: { flex: 1, backgroundColor: '#0F172A' },
     header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20, backgroundColor: '#1E293B' },
     headerTitle: { fontSize: 18, fontWeight: 'bold', color: '#fff' },
@@ -138,11 +149,28 @@ const styles = StyleSheet.create({
     summaryText: { fontSize: 16, color: '#94A3B8' },
     sectionTitle: { fontSize: 16, fontWeight: 'bold', color: '#fff', marginBottom: 16 },
     rowCard: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#1E293B', padding: 16, borderRadius: 16, marginBottom: 12, borderWidth: 1, borderColor: '#334155' },
+=======
+    container: { flex: 1, backgroundColor: '#0A0F1D' },
+    header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20, paddingTop: 20, backgroundColor: '#161B2E', borderBottomLeftRadius: 32, borderBottomRightRadius: 32 },
+    headerTitle: { fontSize: 18, fontWeight: 'bold', color: '#fff' },
+    backButton: { padding: 10, backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 12 },
+    addButton: { padding: 10, backgroundColor: '#6366F1', borderRadius: 12 },
+    content: { padding: 20 },
+    summaryCard: { backgroundColor: '#161B2E', padding: 24, borderRadius: 32, marginBottom: 30, alignItems: 'center', borderWidth: 1, borderColor: '#1F2937' },
+    summaryTitle: { fontSize: 20, fontWeight: 'bold', color: '#fff', marginBottom: 8 },
+    summaryText: { fontSize: 16, color: '#94A3B8' },
+    sectionTitle: { fontSize: 16, fontWeight: 'bold', color: '#fff', marginBottom: 16 },
+    rowCard: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#161B2E', padding: 16, borderRadius: 24, marginBottom: 12, borderWidth: 1, borderColor: '#1F2937' },
+>>>>>>> origin/anusara-IT24102789
     rowHeader: { flexDirection: 'row', alignItems: 'center' },
     rowName: { fontSize: 16, fontWeight: 'bold', color: '#fff', marginLeft: 12 },
     rowDetails: { flexDirection: 'row', alignItems: 'center' },
     badge: { backgroundColor: 'rgba(255,255,255,0.05)', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8, marginRight: 10 },
+<<<<<<< HEAD
     badgeText: { fontSize: 12, fontWeight: 'bold', color: '#3B82F6' },
+=======
+    badgeText: { fontSize: 12, fontWeight: 'bold', color: '#6366F1' },
+>>>>>>> origin/anusara-IT24102789
     detailText: { color: '#CBD5E1', fontSize: 14 },
     bonusText: { color: '#F59E0B', fontSize: 12, marginLeft: 10 }
 });
