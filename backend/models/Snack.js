@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// Snack Schema for Managing Canteen Items and Inventory
 const snackSchema = new mongoose.Schema({
     name: {
         type: String,
