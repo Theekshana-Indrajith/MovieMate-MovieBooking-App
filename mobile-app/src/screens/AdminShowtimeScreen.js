@@ -4,6 +4,10 @@ import { AuthContext } from '../context/AuthContext';
 import api from '../utils/api';
 import { ArrowLeft, Trash2, Plus, Calendar as CalendarIcon, Clock, Edit2, Search } from 'lucide-react-native';
 
+<<<<<<< HEAD
+=======
+// Main Screen for Admins to Manage Movie Showtimes and Schedules
+>>>>>>> origin/nisalma-IT24100881
 const AdminShowtimeScreen = ({ navigation }) => {
     const { token } = useContext(AuthContext);
     const [showtimes, setShowtimes] = useState([]);
