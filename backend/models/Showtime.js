@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// Showtime Schema for Managing Movie Schedules and Screen Assignments
 const showtimeSchema = new mongoose.Schema({
     movie: {
         type: mongoose.Schema.ObjectId,
