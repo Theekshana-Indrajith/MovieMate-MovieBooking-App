@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView, Image, ActivityIndicator, Alert, SafeAreaView, Platform, StatusBar } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import * as ImagePicker from 'expo-image-picker';
 import { AuthContext } from '../context/AuthContext';
@@ -12,6 +13,14 @@ const AddMovieScreen = ({ navigation }) => {
     const [description, setDescription] = useState('');
     const [duration, setDuration] = useState('');
     const [releaseDate, setReleaseDate] = useState(new Date().toISOString().split('T')[0]);
+    const [showDatePicker, setShowDatePicker] = useState(false);
+    
+    const onDateChange = (event, selectedDate) => {
+        setShowDatePicker(false);
+        if (selectedDate) {
+            setReleaseDate(selectedDate.toISOString().split('T')[0]);
+        }
+    };
     
     // Multi-Image Support
     const [poster, setPoster] = useState(null);
@@ -66,10 +75,7 @@ const AddMovieScreen = ({ navigation }) => {
         setCast(cast.filter((_, i) => i !== index));
     };
 
-    const validateDate = (dateStr) => {
-        const reg = /^\d{4}-\d{2}-\d{2}$/;
-        return dateStr.match(reg);
-    };
+    // Date validation removed since DateTimePicker enforces valid dates
 
     const handleSave = async () => {
         if (!title || !description || selectedGenres.length === 0 || !poster || !backdrop || !duration || !releaseDate) {
@@ -82,10 +88,17 @@ const AddMovieScreen = ({ navigation }) => {
             return;
         }
 
-        if (!validateDate(releaseDate)) {
-            Alert.alert('Invalid Date', 'Please use YYYY-MM-DD format for release date.');
+        if (title.trim().length < 2) {
+            Alert.alert('Invalid Title', 'Movie title must be at least 2 characters long.');
             return;
         }
+
+        if (/^\d+$/.test(title.trim())) {
+            Alert.alert('Invalid Title', 'Movie title cannot be just numbers.');
+            return;
+        }
+
+        // Handled by DateTimePicker
 
         setLoading(true);
 
@@ -191,8 +204,31 @@ const AddMovieScreen = ({ navigation }) => {
                     </View>
 
                     <View style={styles.row}>
-                        <View style={{ flex: 1, marginRight: 15 }}><Text style={styles.inputLabel}>Duration</Text><TextInput style={styles.input} value={duration} onChangeText={setDuration} keyboardType="numeric" placeholder="120" placeholderTextColor="#475569" /></View>
-                        <View style={{ flex: 1 }}><Text style={styles.inputLabel}>Release</Text><TextInput style={styles.input} value={releaseDate} onChangeText={setReleaseDate} placeholder="YYYY-MM-DD" placeholderTextColor="#475569" /></View>
+                        <View style={{ flex: 1, marginRight: 15 }}>
+                            <Text style={styles.inputLabel}>Duration (mins)</Text>
+                            <TextInput style={styles.input} value={duration} onChangeText={setDuration} keyboardType="numeric" placeholder="120" placeholderTextColor="#475569" />
+                        </View>
+                        <View style={{ flex: 1 }}>
+                            <Text style={styles.inputLabel}>Release</Text>
+                            {Platform.OS === 'web' ? (
+                                <TextInput style={styles.input} value={releaseDate} onChangeText={setReleaseDate} placeholder="YYYY-MM-DD" placeholderTextColor="#475569" />
+                            ) : (
+                                <>
+                                    <TouchableOpacity onPress={() => setShowDatePicker(true)} style={[styles.input, { justifyContent: 'center' }]}>
+                                        <Text style={{ color: '#fff' }}>{releaseDate}</Text>
+                                    </TouchableOpacity>
+                                    {showDatePicker && (
+                                        <DateTimePicker
+                                            value={new Date(releaseDate)}
+                                            mode="date"
+                                            display="default"
+                                            minimumDate={new Date()} // Prevent past dates
+                                            onChange={onDateChange}
+                                        />
+                                    )}
+                                </>
+                            )}
+                        </View>
                     </View>
 
                     <Text style={styles.inputLabel}>Cast & Crew</Text>

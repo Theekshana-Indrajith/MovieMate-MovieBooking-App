@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ScrollView, Image, ActivityIndicator, Alert, SafeAreaView, Platform, StatusBar } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import * as ImagePicker from 'expo-image-picker';
 import { AuthContext } from '../context/AuthContext';
@@ -15,11 +16,19 @@ const EditMovieScreen = ({ route, navigation }) => {
     const [description, setDescription] = useState(movie.description);
     const [duration, setDuration] = useState(movie.duration.toString());
     const [releaseDate, setReleaseDate] = useState(new Date(movie.releaseDate).toISOString().split('T')[0]);
+    const [showDatePicker, setShowDatePicker] = useState(false);
     
+    const onDateChange = (event, selectedDate) => {
+        setShowDatePicker(false);
+        if (selectedDate) {
+            setReleaseDate(selectedDate.toISOString().split('T')[0]);
+        }
+    };
+
     // Multi-Image Support
     const [poster, setPoster] = useState({ uri: `${BASE_URL}/uploads/movies/${movie.poster}`, old: true });
     const [backdrop, setBackdrop] = useState({ uri: `${BASE_URL}/uploads/movies/${movie.backdrop || 'no-backdrop.jpg'}`, old: true });
-    
+
     // Genre Tags
     const [selectedGenres, setSelectedGenres] = useState(movie.genre.split(',').map(s => s.trim()));
     const availableGenres = ['Action', 'Thriller', 'Comedy', 'Drama', 'Horror', 'Sci-Fi', 'Romance', 'Adventure'];
@@ -80,6 +89,16 @@ const EditMovieScreen = ({ route, navigation }) => {
             return;
         }
 
+        if (title.trim().length < 2) {
+            Alert.alert('Invalid Title', 'Movie title must be at least 2 characters long.');
+            return;
+        }
+
+        if (/^\d+$/.test(title.trim())) {
+            Alert.alert('Invalid Title', 'Movie title cannot be just numbers.');
+            return;
+        }
+
         setLoading(true);
 
         const formData = new FormData();
@@ -88,7 +107,7 @@ const EditMovieScreen = ({ route, navigation }) => {
         formData.append('genre', selectedGenres.join(', '));
         formData.append('duration', duration);
         formData.append('releaseDate', releaseDate);
-        
+
         cast.forEach(c => formData.append('cast', c));
 
         // Poster change logic
@@ -144,7 +163,7 @@ const EditMovieScreen = ({ route, navigation }) => {
             </View>
 
             <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-                
+
                 <Text style={styles.sectionLabel}>Media Update</Text>
                 <View style={styles.imageSection}>
                     <View style={{ flex: 1, marginRight: 12 }}>
@@ -163,7 +182,7 @@ const EditMovieScreen = ({ route, navigation }) => {
                     </View>
                 </View>
 
-                <View style={[styles.formContainer, {marginTop: 15}]}>
+                <View style={[styles.formContainer, { marginTop: 15 }]}>
                     <Text style={styles.inputLabel}>Title</Text>
                     <TextInput style={styles.input} value={title} onChangeText={setTitle} placeholderTextColor="#475569" />
 
@@ -180,14 +199,37 @@ const EditMovieScreen = ({ route, navigation }) => {
                     </View>
 
                     <View style={styles.row}>
-                        <View style={{ flex: 1, marginRight: 15 }}><Text style={styles.inputLabel}>Duration</Text><TextInput style={styles.input} value={duration} onChangeText={setDuration} keyboardType="numeric" placeholderTextColor="#475569" /></View>
-                        <View style={{ flex: 1 }}><Text style={styles.inputLabel}>Release Date</Text><TextInput style={styles.input} value={releaseDate} onChangeText={setReleaseDate} placeholderTextColor="#475569" /></View>
+                        <View style={{ flex: 1, marginRight: 15 }}>
+                            <Text style={styles.inputLabel}>Duration (mins)</Text>
+                            <TextInput style={styles.input} value={duration} onChangeText={setDuration} keyboardType="numeric" placeholderTextColor="#475569" />
+                        </View>
+                        <View style={{ flex: 1 }}>
+                            <Text style={styles.inputLabel}>Release Date</Text>
+                            {Platform.OS === 'web' ? (
+                                <TextInput style={styles.input} value={releaseDate} onChangeText={setReleaseDate} placeholder="YYYY-MM-DD" placeholderTextColor="#475569" />
+                            ) : (
+                                <>
+                                    <TouchableOpacity onPress={() => setShowDatePicker(true)} style={[styles.input, { justifyContent: 'center' }]}>
+                                        <Text style={{ color: '#fff' }}>{releaseDate}</Text>
+                                    </TouchableOpacity>
+                                    {showDatePicker && (
+                                        <DateTimePicker
+                                            value={new Date(releaseDate)}
+                                            mode="date"
+                                            display="default"
+                                            minimumDate={new Date()} // Prevent past dates
+                                            onChange={onDateChange}
+                                        />
+                                    )}
+                                </>
+                            )}
+                        </View>
                     </View>
 
                     <Text style={styles.inputLabel}>Cast & Crew</Text>
                     <View style={styles.castInputRow}>
-                         <TextInput style={[styles.input, { flex: 1, marginBottom: 0 }]} value={currentCast} onChangeText={setCurrentCast} placeholder="Add actor..." placeholderTextColor="#475569" />
-                         <TouchableOpacity style={styles.addCastBtn} onPress={addCast}><Plus color="#fff" size={20} /></TouchableOpacity>
+                        <TextInput style={[styles.input, { flex: 1, marginBottom: 0 }]} value={currentCast} onChangeText={setCurrentCast} placeholder="Add actor..." placeholderTextColor="#475569" />
+                        <TouchableOpacity style={styles.addCastBtn} onPress={addCast}><Plus color="#fff" size={20} /></TouchableOpacity>
                     </View>
                     <View style={styles.castList}>
                         {cast.map((c, i) => (
@@ -196,7 +238,7 @@ const EditMovieScreen = ({ route, navigation }) => {
                     </View>
 
                     <TouchableOpacity style={styles.saveButton} onPress={handleUpdate} disabled={loading}>
-                        {loading ? <ActivityIndicator color="#fff" /> : <><Save color="#fff" size={20} /><Text style={styles.saveButtonText}>Update Database</Text></>}
+                        {loading ? <ActivityIndicator color="#fff" /> : <><Save color="#fff" size={20} /><Text style={styles.saveButtonText}>Update Movie</Text></>}
                     </TouchableOpacity>
                 </View>
                 <View style={{ height: 40 }} />
