@@ -42,11 +42,10 @@ const AdminMovieListScreen = ({ navigation }) => {
                     if (Platform.OS === 'web') window.alert('Movie deleted successfully');
                 }
             } catch (err) {
-                const errorMsg = err.response?.data?.error || 'Failed to delete movie';
                 if (Platform.OS === 'web') {
-                    window.alert(errorMsg);
+                    window.alert(err.response?.data?.error || 'Failed to delete movie');
                 } else {
-                    Alert.alert('Delete Validation', errorMsg);
+                    Alert.alert('Error', err.response?.data?.error || 'Failed to delete movie');
                 }
             }
         };
