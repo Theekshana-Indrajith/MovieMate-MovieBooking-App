@@ -77,7 +77,10 @@ const UserDashboard = ({ navigation }) => {
         </TouchableOpacity>
     );
 
-    const heroMovie = movies.length > 0 ? movies[0] : null;
+    // Sort by _id descending to get the most recently added movie (since Mongo ObjectIDs contain timestamps)
+    const heroMovie = movies.length > 0 
+        ? [...movies].sort((a, b) => b._id.localeCompare(a._id))[0] 
+        : null;
 
     return (
         <SafeAreaView style={styles.container}>
