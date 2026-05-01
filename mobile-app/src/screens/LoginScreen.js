@@ -13,7 +13,10 @@ const LoginScreen = ({ navigation }) => {
             Alert.alert('Error', 'Please enter both email and password');
             return;
         }
-        await login(email, password);
+        const res = await login(email, password);
+        if (res && !res.success) {
+            Alert.alert('Login Failed', res.error || 'Invalid credentials. Please try again.');
+        }
     };
 
     return (

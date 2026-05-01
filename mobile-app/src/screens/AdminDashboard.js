@@ -39,13 +39,14 @@ const AdminDashboard = ({ navigation }) => {
     }, [navigation]);
 
     const managementModules = [
-        { id: 'verify', name: 'Verify Payments', desc: 'Confirm manual slips', icon: <ShieldCheck color="#fff" size={22} />, color: '#F59E0B', screen: 'AdminVerification' },
-        { id: 'shows', name: 'Showtimes', desc: 'Schedule movies', icon: <Calendar color="#fff" size={22} />, color: '#8B5CF6', screen: 'AdminShowtime' },
-        { id: 'seats', name: 'Seats', desc: 'Manage hall layout', icon: <Armchair color="#fff" size={22} />, color: '#10B981', screen: 'AdminSeats' },
-        { id: 'snacks', name: 'Snack Items', desc: 'Inventory control', icon: <Utensils color="#fff" size={22} />, color: '#EC4899', screen: 'AdminSnacks' },
+        { id: 'verify', name: 'Verify Payments', desc: 'Confirm manual slips', icon: <ShieldCheck color="#fff" size={22} />, color: '#F59E0B', screen: 'AdminVerification', badgeCount: stats.pendingBookings || 0 },
+        { id: 'orders', name: 'Snack Orders', desc: 'Manage customer orders', icon: <Utensils color="#fff" size={22} />, color: '#EF4444', screen: 'AdminSnackOrders', badgeCount: stats.pendingOrders || 0 },
+        { id: 'shows', name: 'Showtimes', desc: 'Schedule movies', icon: <Calendar color="#fff" size={22} />, color: '#8B5CF6', screen: 'AdminShowtime', badgeCount: 0 },
+        { id: 'seats', name: 'Seats', desc: 'Manage hall layout', icon: <Armchair color="#fff" size={22} />, color: '#10B981', screen: 'AdminSeats', badgeCount: 0 },
+        { id: 'snacks', name: 'Snack Items', desc: 'Inventory control', icon: <Utensils color="#fff" size={22} />, color: '#EC4899', screen: 'AdminSnacks', badgeCount: 0 },
     ];
 
-    const maxRevenue = stats.topMovies.length > 0 ? Math.max(...stats.topMovies.map(m => m.revenue)) : 0;
+    const maxRevenue = stats.topMovies?.length > 0 ? Math.max(...stats.topMovies.map(m => m.revenue)) : 0;
 
     return (
         <SafeAreaView style={styles.container}>
@@ -156,6 +157,15 @@ const AdminDashboard = ({ navigation }) => {
                                 <Text style={styles.wideModuleName}>{module.name}</Text>
                                 <Text style={styles.wideModuleDesc}>{module.desc}</Text>
                             </View>
+                            
+                            {module.badgeCount > 0 && (
+                                <View style={styles.notificationBadge}>
+                                    <Text style={styles.notificationBadgeText}>
+                                        {module.badgeCount > 99 ? '99+' : module.badgeCount}
+                                    </Text>
+                                </View>
+                            )}
+
                             <ChevronRight color="#475569" size={20} />
                         </TouchableOpacity>
                     ))}
@@ -211,6 +221,9 @@ const styles = StyleSheet.create({
     wideModuleContent: { flex: 1, marginLeft: 16 },
     wideModuleName: { color: '#fff', fontSize: 15, fontWeight: 'bold' },
     wideModuleDesc: { color: '#64748B', fontSize: 11, marginTop: 2 },
+    
+    notificationBadge: { backgroundColor: '#EF4444', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12, marginRight: 10 },
+    notificationBadgeText: { color: '#fff', fontSize: 10, fontWeight: 'bold' },
 
     noData: { color: '#475569', fontSize: 14, textAlign: 'center', paddingVertical: 20 }
 });
